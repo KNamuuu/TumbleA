@@ -11,7 +11,7 @@ router.get("/", function (req, res) {
   if (connection === 1) {
     res.send("DB is connected");
   } else {
-    res.send("DB is not connected", connection);
+    res.send("DB is not connected");
   }
 });
 
