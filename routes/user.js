@@ -23,7 +23,7 @@ router.post("/signup", async function (req, res) {
 
     let user = await user_api.findByEmail(email);
 
-    if (user) {
+    if (user !== {}) {
       return res
         .status(400)
         .json({ errors: { message: "User already exists", user: user } });
