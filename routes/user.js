@@ -26,7 +26,7 @@ router.post("/signup", async function (req, res) {
     if (user) {
       return res
         .status(400)
-        .json({ errors: { message: "User already exists" } });
+        .json({ errors: { message: "User already exists", user: user } });
     } else {
       const response = await user_api.createUser(req.body);
       if (response.code === undefined)
