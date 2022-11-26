@@ -23,15 +23,15 @@ router.post("/signup", async function (req, res) {
 
     let user = await user_api.findByEmail(email);
 
-    if (user !== {}) {
-      return res
-        .status(400)
-        .json({ errors: { message: "User already exists", user: user } });
-    } else {
-      const response = await user_api.createUser(req.body);
-      if (response.code === undefined)
-        res.status(200).end(JSON.stringify(response));
-    }
+    // if (user !== {}) {
+    //   return res
+    //     .status(400)
+    //     .json({ errors: { message: "User already exists", user: user } });
+    // } else {
+    const response = await user_api.createUser(req.body);
+    if (response.code === undefined)
+      res.status(200).end(JSON.stringify(response));
+    // }
   } catch (e) {
     console.log(e);
     res.status(500).end("Internal server error");
