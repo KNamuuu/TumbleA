@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
 module.exports = () => {
   function connect() {
-    mongoose.connect("mongodb://127.0.0.1:27017/TumbleA", function (err) {
-      if (err) {
-        console.error("mongodb connection error", err);
-        return;
+    // mongoose.connect("mongodb://127.0.0.1:27017/TumbleA", function (err) {
+    mongoose.connect(
+      "mongodb+srv://knamuuu:rkdalsgur13@ajou-tumblea.km5xtqc.mongodb.net/?retryWrites=true&w=majority",
+      function (err) {
+        if (err) {
+          console.error("mongodb connection error", err);
+          return;
+        }
+        //   console.log("mongodb connected");
+        console.log("DB is connected");
       }
-      //   console.log("mongodb connected");
-      console.log("DB is connected");
-    });
+    );
   }
   connect();
   mongoose.connection.on("disconnected", connect);
