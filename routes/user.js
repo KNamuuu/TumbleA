@@ -40,7 +40,10 @@ router.post("/signup", async function (req, res) {
 
 router.post("/signin", async function (req, res) {
   try {
-    console.log(req.body);
+    const { email, password } = req.body;
+    let user = await user_api.findByEmail(email);
+
+    console.log(user);
   } catch (e) {
     console.log(e);
     res.status(500).end("Internal server error");
