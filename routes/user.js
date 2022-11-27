@@ -43,6 +43,9 @@ router.post("/signin", async function (req, res) {
     const { email, password } = req.body;
     let user = await user_api.findByEmail(email);
 
+    if (user === null) {
+      res.status(404).end("There is no email. Please check the email");
+    }
     console.log(user);
   } catch (e) {
     console.log(e);
