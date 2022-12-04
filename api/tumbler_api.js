@@ -52,6 +52,8 @@ const createRentalHistory = async (body) => {
   }
 };
 
+const updateReturnHistory = async (body) => {};
+
 module.exports = {
   createTumblers,
   createRentalHistory,
