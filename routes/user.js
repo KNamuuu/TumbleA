@@ -17,20 +17,18 @@ router.get("/", function (req, res) {
 
 router.post("/signup", async function (req, res) {
   try {
-    // console.log(req.body);
-    const { email, password, username } = req.body;
-    console.log(email);
+    const { email } = req.body;
 
     let user = await user_api.findByEmail(email);
 
     if (user) {
-      return res
-        .status(400)
-        .json({ errors: { message: "User already exists", user: user } });
+      return res.status(400).json({
+        code: 400,
+        message: "User already exists",
+      });
     } else {
       const response = await user_api.createUser(req.body);
-      if (response.code === undefined)
-        res.status(200).end(JSON.stringify(response));
+      if (response.code === undefined) res.status(200).json(response);
     }
   } catch (e) {
     console.log(e);
@@ -40,13 +38,34 @@ router.post("/signup", async function (req, res) {
 
 router.post("/signin", async function (req, res) {
   try {
-    const { email, password } = req.body;
-    let user = await user_api.findByEmail(email);
+    let response = await user_api.findUser(req.body);
 
-    if (user === null) {
-      res.status(404).end("There is no email. Please check the email");
+    if (!response) {
+      res.status(404).json({
+        code: 404,
+        message: "Invalid Email",
+      });
+    } else if (response === 404) {
+      res.status(404).json({
+        code: 404,
+        message: "Invalid Password",
+      });
+    } else {
+      res.status(200).json({
+        code: 200,
+        message: "Login Success",
+      });
     }
-    console.log(user);
+  } catch (e) {
+    console.log(e);
+    res.status(500).end("Internal server error");
+  }
+});
+
+router.get("/all", async function (req, res) {
+  try {
+    let response = await user_api.findAllUsers();
+    res.status(200).send(response);
   } catch (e) {
     console.log(e);
     res.status(500).end("Internal server error");
