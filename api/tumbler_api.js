@@ -52,9 +52,32 @@ const createRentalHistory = async (body) => {
   }
 };
 
-const updateReturnHistory = async (body) => {};
+const updateReturnHistory = async (body) => {
+  const { tumblerId } = body;
+  const tumblerData = await tumblerModel.findOne({ tumblerId });
+  console.log(tumblerData._id);
+  const rentalData = await rentalHistory.findOne({
+    tumblerId: tumblerData._id,
+  });
+
+  console.log(tumblerData);
+  console.log(rentalData);
+
+  const today = new Date();
+  if (tumblerData.tumblerStatus !== 1) {
+    return 400;
+  } else {
+    console.log(rentalData.dueDate > today);
+    if (rentalData.dueDate > today) {
+      return true;
+    } else {
+      return 401;
+    }
+  }
+};
 
 module.exports = {
   createTumblers,
   createRentalHistory,
+  updateReturnHistory,
 };

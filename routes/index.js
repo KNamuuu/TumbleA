@@ -33,4 +33,21 @@ router.post("/rental", async function (req, res) {
   }
 });
 
+router.post("/return", async function (req, res) {
+  try {
+    let response = await tumbler_api.updateReturnHistory(req.body);
+    // console.log(response);
+    if (response === 400) {
+      res.status(400).end("대여중인 텀블러가 아닙니다.");
+    } else if (response === 401) {
+      res.status(401).end("반납 기한이 지났습니다.");
+    } else {
+      res.status(200).end("반납처리가 완료되었습니다.");
+    }
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+});
+
 module.exports = router;
