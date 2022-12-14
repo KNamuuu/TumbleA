@@ -6,12 +6,12 @@ var historySchema = new Schema({
     type: mongoose.Types.ObjectId,
     required: true,
     ref: "user",
-  }, // 유저 index user document에서 참조
+  }, // 유저 index user collection에서 참조
   tumblerId: {
     type: mongoose.Types.ObjectId,
     required: true,
     ref: "tumbler",
-  }, // 텀블러 index tumbler document에서 참조
+  }, // 텀블러 index tumbler collection에서 참조
   dueDate: {
     type: Date,
     required: true,

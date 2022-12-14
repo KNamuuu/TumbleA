@@ -55,13 +55,10 @@ const createRentalHistory = async (body) => {
 const updateReturnHistory = async (body) => {
   const { tumblerId } = body;
   const tumblerData = await tumblerModel.findOne({ tumblerId });
-  console.log(tumblerData._id);
+
   const rentalData = await rentalHistory.findOne({
     tumblerId: tumblerData._id,
   });
-
-  console.log(tumblerData);
-  console.log(rentalData);
 
   const today = new Date();
   if (tumblerData.tumblerStatus !== 1) {
@@ -69,9 +66,23 @@ const updateReturnHistory = async (body) => {
   } else {
     console.log(rentalData.dueDate > today);
     if (rentalData.dueDate > today) {
+      await rentalHistory.findOneAndUpdate(
+        { tumblerId: tumblerData._id },
+        {
+          returnDate: new Date(),
+        }
+      );
+
+      await tumblerModel.findOneAndUpdate(
+        { tumblerId },
+        {
+          tumblerAvailability: true,
+          tumblerStatus: 3,
+        }
+      );
       return true;
     } else {
-      return 401;
+      return 403;
     }
   }
 };

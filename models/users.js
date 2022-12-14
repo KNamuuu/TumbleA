@@ -2,12 +2,6 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-  // userId: {
-  //   type: Number,
-  //   required: true,
-  //   unique: true,
-  // }, // 유저 index
-
   email: {
     type: String,
     required: true,

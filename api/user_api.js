@@ -1,8 +1,16 @@
+const bcrypt = require("bcrypt");
+
 const userModel = require("../models/users");
 
 const createUser = async (body) => {
+  const { email, password, username } = body;
+
   try {
-    const data = await userModel.create(body);
+    const data = await userModel.create({
+      email: email,
+      password: bcrypt.hashSync(password, 10),
+      username: username,
+    });
     return data;
   } catch (e) {
     console.log(e);
@@ -26,10 +34,10 @@ const findUser = async (body) => {
   try {
     const data = await userModel.findOne({ email });
 
-    if (data) {
-      if (data.password === password) return data;
-      else return 404;
-    } else return data;
+    const validPassword = await bcrypt.compare(body.password, data.password);
+
+    if (validPassword) return data;
+    else return 404;
   } catch (e) {
     console.log(e);
     return e;
