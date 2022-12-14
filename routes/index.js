@@ -50,4 +50,10 @@ router.post("/return", async function (req, res) {
   }
 });
 
+router.post("/rentalhistory", async function (req, res) {
+  await tumbler_api
+    .findAllRentalHistories(req.body)
+    .then((v) => res.status(200).send(v));
+});
+
 module.exports = router;

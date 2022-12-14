@@ -34,7 +34,6 @@ const createRentalHistory = async (body) => {
         dueDate: dueDate,
         rentalDate: today,
       };
-      console.log(body);
 
       await tumblerModel.findOneAndUpdate(
         { tumblerId },
@@ -55,23 +54,30 @@ const createRentalHistory = async (body) => {
 const updateReturnHistory = async (body) => {
   const { tumblerId } = body;
   const tumblerData = await tumblerModel.findOne({ tumblerId });
+  const today = new Date();
 
-  const rentalData = await rentalHistory.findOne({
+  let rentalData = await rentalHistory.find({
     tumblerId: tumblerData._id,
   });
 
-  const today = new Date();
+  console.log("before", rentalData);
+
+  rentalData = rentalData.filter((el) => el.returnDate === undefined);
+
+  console.log("after", rentalData);
+
   if (tumblerData.tumblerStatus !== 1) {
     return 400;
   } else {
-    console.log(rentalData.dueDate > today);
-    if (rentalData.dueDate > today) {
-      await rentalHistory.findOneAndUpdate(
-        { tumblerId: tumblerData._id },
-        {
+    console.log(rentalData[0]._id);
+    if (rentalData[0].dueDate > today) {
+      console.log("here");
+      await rentalHistory
+        .findOneAndUpdate(rentalData[0]._id, {
           returnDate: new Date(),
-        }
-      );
+        })
+        .then((v) => console.log(v));
+      // await rentalHistory.findOne(rentalData[0]).then((v) => console.log(v));
 
       await tumblerModel.findOneAndUpdate(
         { tumblerId },
@@ -87,8 +93,22 @@ const updateReturnHistory = async (body) => {
   }
 };
 
+const findAllRentalHistories = async (body) => {
+  const { email } = body;
+
+  const userData = await userModel.findOne({ email });
+  const userId = userData._id;
+
+  let rentalHistoryData;
+
+  await rentalHistory.find({ userId }).then((v) => (rentalHistoryData = v));
+
+  return rentalHistoryData;
+};
+
 module.exports = {
   createTumblers,
   createRentalHistory,
   updateReturnHistory,
+  findAllRentalHistories,
 };
