@@ -12,6 +12,10 @@ var historySchema = new Schema({
     required: true,
     ref: "tumbler",
   }, // 텀블러 index tumbler collection에서 참조
+  tumblerNum: {
+    type: Number,
+    required: true,
+  },
   dueDate: {
     type: Date,
     required: true,

@@ -31,6 +31,7 @@ const createRentalHistory = async (body) => {
       let body = {
         userId: userData._id,
         tumblerId: tumblerData._id,
+        tumblerNum: tumblerId,
         dueDate: dueDate,
         rentalDate: today,
       };
